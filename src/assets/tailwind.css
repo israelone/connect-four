@@ -1,0 +1,11 @@
+html,
+body {
+  top: 0;
+  height: 100%;
+}
+
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
