@@ -4,8 +4,8 @@
   >
     <div class="button bg-red-500"></div>
     <div class="button bg-yellow-500"></div>
-    <div class="button bg-red-500"></div>
     <div class="button bg-yellow-500"></div>
+    <div class="button bg-red-500"></div>
   </div>
   <div class="flex justify-center flex-col items-center gap-10">
     <button class="bg-red-500 text-white">PLAY VS CPU</button>
@@ -13,6 +13,7 @@
     <button class="bg-white text-black">GAME RULES</button>
   </div>
 </template>
+
 <style scoped>
 .button {
   border-radius: 100%;

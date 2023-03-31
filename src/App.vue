@@ -1,21 +1,24 @@
 <template>
-  <MainScreen />
+  <!-- <MainScreen /> -->
+  <GameScreen />
 </template>
 
 <script>
-import MainScreen from "./components/MainScreen.vue";
+import GameScreen from "./views/GameScreen.vue";
+// import MainScreen from "./components/MainScreen.vue";
 
 export default {
   name: "App",
   components: {
-    MainScreen,
+    // MainScreen,
+    GameScreen,
   },
 };
 </script>
 
 <style>
 #app {
-  height: 100vh;
+  height: 99vh;
   display: flex;
   flex-direction: column;
   justify-content: center;

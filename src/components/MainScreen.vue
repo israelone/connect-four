@@ -1,5 +1,4 @@
 <template>
-  <div class="hello"></div>
   <GamePlayOptions></GamePlayOptions>
 </template>
 
