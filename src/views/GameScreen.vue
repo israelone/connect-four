@@ -66,9 +66,23 @@
           }}</span>
         </div>
       </div>
+
+      <div class="z-10 relative bottom-6 box bg-white m-auto w-10/12 p-6">
+        <span class="block text-center text-black">PLAYER 1</span>
+        <span class="block text-center text-5xl text-black">WINS </span>
+        <button class="bg-violet-500 block m-auto">PLAY AGAIN</button>
+      </div>
     </div>
     <div
       class="w-full h-64 z-0 absolute bottom-0 rounded-t-3xl bg-violet-500"
+      :style="{
+        backgroundColor:
+          winner === 'PLAYER 1'
+            ? '#FD6687'
+            : winner === 'PLAYER 2'
+            ? '#FFCE69'
+            : '',
+      }"
     ></div>
   </div>
 </template>
@@ -235,6 +249,13 @@ button {
   background-color: white;
   border-radius: 26px;
   box-shadow: 0px 12px 0px 0px rgba(0, 0, 0, 1);
+}
+
+.box {
+  background-color: white;
+  border-radius: 26px;
+  box-shadow: 0px 12px 0px 0px rgba(0, 0, 0, 1);
+  border: 4px solid black;
 }
 
 .column {
