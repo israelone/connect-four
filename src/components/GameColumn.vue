@@ -90,7 +90,6 @@ export default {
   data() {
     return {
       showArrow: false,
-
       column: [],
     };
   },
@@ -101,7 +100,7 @@ export default {
     "addMoveToGameGrid",
   ],
   methods: {
-    addDisc(e) {
+    addDisc() {
       if (this.column.length < 6) {
         this.column.push({
           src: this.currentPlayer === "PLAYER 1" ? RedCounter : YellowCounter,
@@ -110,8 +109,6 @@ export default {
         this.addMoveToGameGrid(6 - this.column.length, this.columnNumber);
         this.endPlayerTurn();
       }
-
-      console.log(e);
     },
   },
 };

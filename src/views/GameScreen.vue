@@ -72,16 +72,12 @@
     ></div>
   </div>
 </template>
-<script setup>
-import { onMounted } from "vue";
-
-onMounted(() => {});
-</script>
 
 <script>
 import GameColumn from "@/components/GameColumn.vue";
 import PlayerOneTurnBackground from "../assets/images/turn-background-red.svg";
 import PlayerTwoTurnBackground from "../assets/images/turn-background-yellow.svg";
+
 export default {
   name: "GameScreen",
 
@@ -102,6 +98,8 @@ export default {
       playerOne: 0,
       playerTwo: 0,
       showArrow: false,
+      winner: "",
+      gameStarted: false,
       timer: setInterval(() => {
         if (this.seconds === 15) {
           this.endPlayerTurn();
@@ -120,19 +118,51 @@ export default {
         this.currentPlayer = "PLAYER 1";
         this.playerTurnBackground = PlayerOneTurnBackground;
       }
-
       //   this.timer;
     },
     addMoveToGameGrid(row, column) {
       this.gameGrid[row][column] = this.currentPlayer;
-      console.log(this.gameGrid);
+      this.checkForWinner(row, column);
     },
     endGame() {
       clearInterval(this.timer);
     },
-    // checkForWin(){
+    checkForWinner(x, y) {
+      let count = 0;
+      const searchParameters = {
+        downwards: [1, 0],
+        backwards: [0, -1],
+        forwards: [0, 1],
+        downLeft: [1, -1],
+        downRight: [1, 1],
+      };
+      const recursion = (x, y, direction) => {
+        if (x < 6 && y < 7) {
+          if (this.gameGrid[x][y] === this.currentPlayer) {
+            count++;
+            if (count === 3) {
+              this.endGame();
+              this.winner = this.currentPlayer;
+            }
+            recursion(
+              x + searchParameters[direction][0],
+              y + searchParameters[direction][1],
+              direction
+            );
+          } else {
+            count = 0;
+          }
+        }
+      };
 
-    // }
+      for (const direction in searchParameters) {
+        recursion(
+          x + searchParameters[direction][0],
+          y + searchParameters[direction][1],
+          direction
+        );
+      }
+    },
   },
   components: { GameColumn },
 };
