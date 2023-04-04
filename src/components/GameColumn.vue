@@ -5,11 +5,7 @@
     @mouseleave="showArrow = false"
     @click="($event) => addDisc($event)"
   >
-    <img
-      v-if="showArrow"
-      class="m-auto absolute"
-      src="../assets/images/marker-red.svg"
-    />
+    <img v-show="showArrow" class="absolute mx-2" :src="playerMarker" />
     <img
       class="marker"
       v-for="(row, index) in column"
@@ -86,6 +82,9 @@
 <script>
 import RedCounter from "../assets/images/counter-red-small.svg";
 import YellowCounter from "../assets/images/counter-yellow-small.svg";
+import RedMarker from "../assets/images/marker-red.svg";
+import YellowMarker from "../assets/images/marker-yellow.svg";
+
 export default {
   data() {
     return {
@@ -100,6 +99,11 @@ export default {
     "addMoveToGameGrid",
     "gameEnded",
   ],
+  computed: {
+    playerMarker() {
+      return this.currentPlayer === "PLAYER 1" ? RedMarker : YellowMarker;
+    },
+  },
   methods: {
     addDisc() {
       if (this.column.length < 6 && !this.gameEnded) {
