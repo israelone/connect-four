@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import GamePlayOptions from "./GamePlayOptions.vue";
+import GamePlayOptions from "../components/GamePlayOptions.vue";
 
 export default {
   name: "MainScreen",
