@@ -18,7 +18,6 @@ export default {
 
 <style>
 #app {
-  height: 99vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
