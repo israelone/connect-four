@@ -42,6 +42,7 @@
           v-for="i in 7"
           :columnNumber="i - 1"
           :key="i"
+          :gameEnded="gameEnded"
         />
       </div>
       <div class="relative top-0 left-0">
@@ -54,23 +55,26 @@
           src="../assets/images/board-layer-black-small.svg"
         />
       </div>
-
-      <div class="z-10 relative bottom-6">
+      <div
+        v-if="winner"
+        class="z-10 relative bottom-6 box bg-white m-auto w-10/12 p-6"
+      >
+        <span class="block text-center text-black">PLAYER 1</span>
+        <span class="block text-center text-5xl text-black">WINS </span>
+        <button @click="playAgain" class="bg-violet-500 block m-auto">
+          PLAY AGAIN
+        </button>
+      </div>
+      <div v-else class="z-10 relative bottom-6">
         <img class="m-auto" :src="playerTurnBackground" />
         <div class="relative bottom-28">
           <span class="block text-center text-white">{{
             currentPlayer + "'S TURN"
           }}</span>
           <span class="block text-center text-5xl text-white">{{
-            seconds + "s"
+            timer + "s"
           }}</span>
         </div>
-      </div>
-
-      <div class="z-10 relative bottom-6 box bg-white m-auto w-10/12 p-6">
-        <span class="block text-center text-black">PLAYER 1</span>
-        <span class="block text-center text-5xl text-black">WINS </span>
-        <button class="bg-violet-500 block m-auto">PLAY AGAIN</button>
       </div>
     </div>
     <div
@@ -94,7 +98,9 @@ import PlayerTwoTurnBackground from "../assets/images/turn-background-yellow.svg
 
 export default {
   name: "GameScreen",
-
+  mounted() {
+    this.startTimer();
+  },
   data() {
     // eslint-disable-next-line no-unused-labels
     return {
@@ -108,23 +114,32 @@ export default {
       ],
       currentPlayer: "PLAYER 1",
       playerTurnBackground: PlayerOneTurnBackground,
-      seconds: 0,
+      timer: 0,
       playerOne: 0,
       playerTwo: 0,
       showArrow: false,
       winner: "",
+      intervalId: null,
       gameStarted: false,
-      timer: setInterval(() => {
-        if (this.seconds === 15) {
-          this.endPlayerTurn();
-        }
-        this.seconds += 1;
-      }, 1000),
+      gameEnded: false,
     };
   },
   methods: {
+    startTimer() {
+      this.intervalId = setInterval(() => {
+        this.timer++;
+        if (this.timer === 16) {
+          this.endPlayerTurn();
+        }
+      }, 1000);
+    },
+    stopTimer() {
+      clearInterval(this.intervalId);
+      this.intervalId = null;
+      this.timer = 0;
+    },
     endPlayerTurn() {
-      this.seconds = 0;
+      this.timer = 0;
       if (this.currentPlayer === "PLAYER 1") {
         this.currentPlayer = "PLAYER 2";
         this.playerTurnBackground = PlayerTwoTurnBackground;
@@ -132,14 +147,22 @@ export default {
         this.currentPlayer = "PLAYER 1";
         this.playerTurnBackground = PlayerOneTurnBackground;
       }
-      //   this.timer;
     },
     addMoveToGameGrid(row, column) {
       this.gameGrid[row][column] = this.currentPlayer;
       this.checkForWinner(row, column);
     },
     endGame() {
-      clearInterval(this.timer);
+      this.stopTimer();
+      this.gameEnded = true;
+      this.gameGrid = [
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+      ];
     },
     checkForWinner(x, y) {
       let count = 0;
@@ -176,6 +199,12 @@ export default {
           direction
         );
       }
+    },
+    playAgain() {
+      this.timer = 0;
+      this.winner = "";
+      this.gameEnded = false;
+      this.startTimer();
     },
   },
   components: { GameColumn },

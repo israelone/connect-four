@@ -98,10 +98,11 @@ export default {
     "endPlayerTurn",
     "columnNumber",
     "addMoveToGameGrid",
+    "gameEnded",
   ],
   methods: {
     addDisc() {
-      if (this.column.length < 6) {
+      if (this.column.length < 6 && !this.gameEnded) {
         this.column.push({
           src: this.currentPlayer === "PLAYER 1" ? RedCounter : YellowCounter,
           top: 376 - this.column.length * 119.5,
