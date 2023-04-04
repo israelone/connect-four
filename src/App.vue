@@ -1,18 +1,10 @@
 <template>
-  <!-- <MainScreen /> -->
-  <GameScreen />
+  <router-view></router-view>
 </template>
 
 <script>
-import GameScreen from "./views/GameScreen.vue";
-// import MainScreen from "./components/MainScreen.vue";
-
 export default {
   name: "App",
-  components: {
-    // MainScreen,
-    GameScreen,
-  },
 };
 </script>
 

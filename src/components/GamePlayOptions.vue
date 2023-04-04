@@ -8,9 +8,15 @@
     <div class="button bg-red-500"></div>
   </div>
   <div class="flex justify-center flex-col items-center gap-10">
-    <button class="bg-red-500 text-white">PLAY VS CPU</button>
-    <button class="bg-yellow-500 text-black">PLAY VS PLAYER</button>
-    <button class="bg-white text-black">GAME RULES</button>
+    <router-link to="/game" class="top-bar-link">
+      <button class="bg-red-500 text-white">PLAY VS CPU</button>
+    </router-link>
+    <router-link to="/game" class="top-bar-link">
+      <button class="bg-yellow-500 text-black">PLAY VS PLAYER</button>
+    </router-link>
+    <router-link to="/rules" class="top-bar-link">
+      <button class="bg-white text-black">GAME RULES</button>
+    </router-link>
   </div>
 </template>
 
