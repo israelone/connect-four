@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <TopMenu />
+    <TopMenu :playAgain="playAgain" />
     <ScoreKeepers />
     <div class="">
       <div class="clear-layer">
@@ -135,41 +135,135 @@ export default {
         [0, 0, 0, 0, 0, 0, 0],
       ];
     },
-    checkForWinner(x, y) {
+    checkForWinner() {
+      if (
+        this.checkForWinnerHorizontally() ||
+        this.checkForWinnerVertically() ||
+        this.checkForWinnerUpRight() ||
+        this.checkForWinnerUpLeft()
+      ) {
+        this.endGame();
+        this.winner = this.currentPlayer;
+      }
+    },
+    checkForWinnerVertically() {
       let count = 0;
-      const searchParameters = {
-        downwards: [1, 0],
-        backwards: [0, -1],
-        forwards: [0, 1],
-        downLeft: [1, -1],
-        downRight: [1, 1],
-      };
-      const recursion = (x, y, direction) => {
-        if (x < 6 && y < 7) {
+      for (let y = 0; y < 7; y++) {
+        count = 0;
+        for (let x = 5; x > 0; x--) {
           if (this.gameGrid[x][y] === this.currentPlayer) {
             count++;
-            if (count === 3) {
-              this.endGame();
-              this.winner = this.currentPlayer;
+            if (count === 4) {
+              return true;
             }
-            recursion(
-              x + searchParameters[direction][0],
-              y + searchParameters[direction][1],
-              direction
-            );
           } else {
             count = 0;
           }
         }
+      }
+      return false;
+    },
+    checkForWinnerHorizontally() {
+      let count = 0;
+      for (let x = 5; x > 0; x--) {
+        for (let y = 0; y < 7; y++) {
+          if (this.gameGrid[x][y] === this.currentPlayer) {
+            count++;
+            if (count === 4) {
+              return true;
+            }
+          } else {
+            count = 0;
+          }
+        }
+      }
+      return false;
+    },
+    checkForWinnerUpRight() {
+      let winnerFound = false;
+      const upRightEntryPoints = [
+        [3, 0],
+        [4, 0],
+        [5, 0],
+        [5, 1],
+        [5, 2],
+        [5, 3],
+      ];
+      let count = 0;
+      const recursion = (x, y) => {
+        // console.log(x, y, "line 199");
+        if (x < 6 && x >= 0 && y < 7 && y >= 0) {
+          if (this.gameGrid[x][y] === this.currentPlayer) {
+            console.log(x, y, this.currentPlayer, count);
+            count++;
+            if (count === 4) {
+              winnerFound = true;
+            }
+            recursion(x - 1, y + 1);
+          } else {
+            count = 0;
+            recursion(x - 1, y + 1);
+          }
+        } else {
+          return false;
+        }
       };
+      for (const entryPoint in upRightEntryPoints) {
+        if (winnerFound) {
+          return true;
+        }
 
-      for (const direction in searchParameters) {
         recursion(
-          x + searchParameters[direction][0],
-          y + searchParameters[direction][1],
-          direction
+          upRightEntryPoints[entryPoint][0],
+          upRightEntryPoints[entryPoint][1]
         );
       }
+      return false;
+    },
+    checkForWinnerUpLeft() {
+      let winnerFound = false;
+      const upLeftEntryPoints = [
+        [3, 6],
+        [4, 6],
+        [5, 6],
+        [5, 5],
+        [5, 4],
+        [5, 3],
+      ];
+      let count = 0;
+      const recursion = (x, y) => {
+        if (x < 6 && x >= 0 && y < 7 && y >= 0) {
+          // console.log(x, y, this.gameGrid[x][y]);
+          if (this.gameGrid[x][y] === this.currentPlayer) {
+            count++;
+            if (count === 4) {
+              winnerFound = true;
+            }
+            recursion(x - 1, y - 1);
+          } else {
+            count = 0;
+            recursion(x - 1, y - 1);
+          }
+        } else {
+          return false;
+        }
+      };
+      for (const entryPoint in upLeftEntryPoints) {
+        if (winnerFound) {
+          return true;
+        }
+
+        recursion(
+          upLeftEntryPoints[entryPoint][0],
+          upLeftEntryPoints[entryPoint][1]
+        );
+      }
+      return false;
+    },
+    restartGame() {
+      this.playAgain();
+      this.playerOneScore = 0;
+      this.playerTwoScore = 0;
     },
     playAgain() {
       this.timer = 0;
