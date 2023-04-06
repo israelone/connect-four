@@ -150,7 +150,7 @@ export default {
       let count = 0;
       for (let y = 0; y < 7; y++) {
         count = 0;
-        for (let x = 5; x > 0; x--) {
+        for (let x = 5; x >= 0; x--) {
           if (this.gameGrid[x][y] === this.currentPlayer) {
             count++;
             if (count === 4) {
@@ -165,7 +165,8 @@ export default {
     },
     checkForWinnerHorizontally() {
       let count = 0;
-      for (let x = 5; x > 0; x--) {
+      for (let x = 5; x >= 0; x--) {
+        count = 0;
         for (let y = 0; y < 7; y++) {
           if (this.gameGrid[x][y] === this.currentPlayer) {
             count++;
@@ -191,7 +192,6 @@ export default {
       ];
       let count = 0;
       const recursion = (x, y) => {
-        // console.log(x, y, "line 199");
         if (x < 6 && x >= 0 && y < 7 && y >= 0) {
           if (this.gameGrid[x][y] === this.currentPlayer) {
             console.log(x, y, this.currentPlayer, count);
@@ -252,7 +252,6 @@ export default {
         if (winnerFound) {
           return true;
         }
-
         recursion(
           upLeftEntryPoints[entryPoint][0],
           upLeftEntryPoints[entryPoint][1]
@@ -284,7 +283,7 @@ export default {
 .container {
   display: flex;
   flex-direction: column;
-  margin-top: 26px;
+  padding-top: 17px;
 }
 .layer {
   width: 90vw;
