@@ -10,8 +10,10 @@
           :addMoveToGameGrid="addMoveToGameGrid"
           v-for="i in 7"
           :columnNumber="i - 1"
-          :key="i"
+          :key="`gameColumn_${i}`"
+          :clearColumn="clearColumn"
           :gameEnded="gameEnded"
+          :winner="winner"
         />
       </div>
       <div class="relative top-0 left-0">
@@ -28,7 +30,7 @@
         v-if="winner"
         class="z-10 relative bottom-6 box bg-white m-auto w-10/12 p-6"
       >
-        <span class="block text-center text-black">PLAYER 1</span>
+        <span class="block text-center text-black">{{ winner }}</span>
         <span class="block text-center text-5xl text-black">WINS </span>
         <button @click="playAgain" class="bg-violet-500 block m-auto">
           PLAY AGAIN
@@ -93,6 +95,7 @@ export default {
       intervalId: null,
       gameStarted: false,
       gameEnded: false,
+      gameColumnsKey: 0,
     };
   },
   methods: {
@@ -265,10 +268,15 @@ export default {
       this.playerTwoScore = 0;
     },
     playAgain() {
+      this.gameColumnsKey++;
       this.timer = 0;
       this.winner = "";
       this.gameEnded = false;
+      this.clearColumn();
       this.startTimer();
+    },
+    clearColumn() {
+      this.column = [];
     },
   },
   components: { GameColumn, ScoreKeepers, TopMenu },

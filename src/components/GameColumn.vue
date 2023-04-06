@@ -98,6 +98,7 @@ export default {
     "columnNumber",
     "addMoveToGameGrid",
     "gameEnded",
+    "winner",
   ],
   computed: {
     playerMarker() {
@@ -106,13 +107,20 @@ export default {
   },
   methods: {
     addDisc() {
-      if (this.column.length < 6 && !this.gameEnded) {
+      if (this.column.length < 6 && this.winner === "") {
         this.column.push({
           src: this.currentPlayer === "PLAYER 1" ? RedCounter : YellowCounter,
           top: 376 - this.column.length * 119.5,
         });
         this.addMoveToGameGrid(6 - this.column.length, this.columnNumber);
         this.endPlayerTurn();
+      }
+    },
+  },
+  watch: {
+    gameEnded(newVal) {
+      if (newVal === false) {
+        this.column = [];
       }
     },
   },
