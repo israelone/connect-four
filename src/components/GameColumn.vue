@@ -1,11 +1,11 @@
 <template>
   <div
     class="column"
-    @mouseover="showArrow = true"
-    @mouseleave="showArrow = false"
+    @mouseover="() => showArrowTrigger()"
+    @mouseleave="() => showArrowTrigger()"
     @click="($event) => addDisc($event)"
   >
-    <img v-show="showArrow" class="absolute mx-2" :src="playerMarker" />
+    <img v-show="showArrow" class="arrow absolute mx-2" :src="playerMarker" />
     <img
       class="marker"
       v-for="(row, index) in column"
@@ -75,6 +75,12 @@
   animation: myAnim-198497d0 2s ease 0s 1 normal forwards;
   position: relative;
 }
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .marker {
+    width: 85px;
+    height: 85px;
+  }
+}
 </style>
 <!-- 425
 366
@@ -106,14 +112,28 @@ export default {
     },
   },
   methods: {
+    showArrowTrigger() {
+      if (window.innerWidth > 991) {
+        this.showArrow = !this.showArrow;
+      }
+    },
     addDisc() {
       if (this.column.length < 6 && this.winner === "") {
-        this.column.push({
-          src: this.currentPlayer === "PLAYER 1" ? RedCounter : YellowCounter,
-          top: 376 - this.column.length * 119.5,
-        });
-        this.addMoveToGameGrid(6 - this.column.length, this.columnNumber);
-        this.endPlayerTurn();
+        if (window.innerWidth < 768) {
+          this.column.push({
+            src: this.currentPlayer === "PLAYER 1" ? RedCounter : YellowCounter,
+            top: 291 - this.column.length * 95,
+          });
+          this.addMoveToGameGrid(6 - this.column.length, this.columnNumber);
+          this.endPlayerTurn();
+        } else if (window.innerWidth > 767 && window.innerWidth < 991.98) {
+          this.column.push({
+            src: this.currentPlayer === "PLAYER 1" ? RedCounter : YellowCounter,
+            top: 468 - this.column.length * 174,
+          });
+          this.addMoveToGameGrid(6 - this.column.length, this.columnNumber);
+          this.endPlayerTurn();
+        }
       }
     },
   },

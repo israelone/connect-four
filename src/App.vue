@@ -12,9 +12,9 @@ export default {
 #app {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   gap: 75px;
   align-items: center;
-  background-color: #7a45ff;
+  background-color: #5c2dd5;
+  height: 100%;
 }
 </style>
